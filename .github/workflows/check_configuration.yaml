@@ -1,0 +1,15 @@
+name: Check Configuration
+
+on: push
+
+jobs:
+  check-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: kpucynski/action-ha-config-check@master
+        with:
+          ha_version: "latest"
+        env:
+          HASS_EXTRA_ARGS: "-f -i"
+          CONFIG_PATH: "config/"
