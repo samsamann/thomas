@@ -1,0 +1,17 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+            ref: ha
+      - run: git merge master
+      - run: rm *.md && mv config/* . && rm -rf .github config
+      - run: git add -A && git commit --amend -m $(git log -1 --pretty=%B) && git push
