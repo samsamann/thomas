@@ -9,9 +9,18 @@ jobs:
   release:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
         with:
             ref: ha
-      - run: git merge master
-      - run: rm *.md && mv config/* . && rm -rf .github config
-      - run: git add -A && git commit --amend -m $(git log -1 --pretty=%B) && git push
+            fetch-depth: 1
+      - run: |
+          git config user.name "$(git log -1 --pretty=format:'%an')"
+          git config user.email "$(git log -1 --pretty=format:'%ae')"
+          git fetch origin master
+          git merge origin/master
+          mv config/* .
+          rm -rf *.md config
+          git add -u
+          git add *.yaml
+          git commit --amend -m "$(git log -1 --pretty=%B)"
+          git push

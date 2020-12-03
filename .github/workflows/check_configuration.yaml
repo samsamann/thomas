@@ -1,12 +1,15 @@
 name: Check Configuration
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   check-config:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2.3.4
       - uses: kpucynski/action-ha-config-check@master
         with:
           ha_version: "latest"
