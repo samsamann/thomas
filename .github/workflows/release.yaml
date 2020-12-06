@@ -8,19 +8,18 @@ on:
 jobs:
   release:
     runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2.3.4
-        with:
-            ref: ha
-            fetch-depth: 1
       - run: |
           git config user.name "$(git log -1 --pretty=format:'%an')"
           git config user.email "$(git log -1 --pretty=format:'%ae')"
-          git fetch origin master
-          git merge origin/master
+          git fetch origin ha
+          git checkout ha
+          git merge master --no-commit
+          find . -type d -d 1 -not \( -name ".git*" -or -name "config" \) -exec rm -rf {} \;
           mv config/* .
-          rm -rf *.md config
-          git add -u
-          git add *.yaml
+          rmdir config
+          git add .
           git commit --amend -m "$(git log -1 --pretty=%B)"
           git push
