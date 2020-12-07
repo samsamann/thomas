@@ -19,7 +19,7 @@ jobs:
           git fetch origin ha
           git checkout ha
           git merge master --no-commit
-          find . -type d -d 1 -not \( -name ".git*" -or -name "config" \) -exec rm -rf {} \;
+          find . -depth 1 -type d -not \( -name ".git*" -or -name "config" \) -exec rm -rf {} \;
           mv config/* .
           rmdir config
           git add .
